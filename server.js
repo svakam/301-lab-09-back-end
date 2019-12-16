@@ -74,13 +74,14 @@ app.get('/movies', (request, response) => {
 
 app.get('/yelp', (request, response) => {
   try {
-    console.log(request.query.data);
+    let locationObject = request.query.data;
+    restaurantFinder(locationObject, response);
   }
   catch (error) {
     console.error(error);
     response.status(500).send(errorMessage);
   }
-})
+});
 
 // function to check database for location
 let checkDatabaseLocation = (city, response) => {
@@ -204,6 +205,29 @@ let movieFinder = (locationObject, response) => {
     this.popularity = movieData.popularity;
     // eslint-disable-next-line camelcase
     this.released_on = movieData.release_date;
+  }
+};
+
+let restaurantFinder = (locationObject, response) => {
+  let url = `https://api.yelp.com/v3/businesses/search?term=food&latitude=${locationObject.latitude}&longitude=${locationObject.longitude}`;
+  superagent.get(url)
+    .set('Authorization', `Bearer ${process.env.YELP_API_KEY}`)
+    .then(request => {
+      let restaurants = request.body.businesses;
+      const restaurantArr = restaurants.map(restaurant => new Restaurant(restaurant));
+      response.send(restaurantArr);
+    })
+    .catch(error => {
+      console.error(error);
+      response.status(500).send(errorMessage);
+    });
+  function Restaurant(restaurant) {
+    this.name = restaurant.name;
+    // eslint-disable-next-line camelcase
+    this.image_url = restaurant.image_url;
+    this.price = restaurant.price;
+    this.rating = restaurant.rating;
+    this.url = restaurant.url;
   }
 };
 
