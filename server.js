@@ -61,6 +61,27 @@ app.get('/events', (request, response) => {
   }
 });
 
+app.get('/movies', (request, response) => {
+  try {
+    let locationObject = request.query.data;
+    movieFinder(locationObject, response);
+  }
+  catch (error) {
+    console.error(error);
+    response.status(500).send(errorMessage);
+  }
+});
+
+app.get('/yelp', (request, response) => {
+  try {
+    console.log(request.query.data);
+  }
+  catch (error) {
+    console.error(error);
+    response.status(500).send(errorMessage);
+  }
+})
+
 // function to check database for location
 let checkDatabaseLocation = (city, response) => {
   let sql = 'SELECT * FROM city_explorer WHERE search_query = $1';
@@ -144,6 +165,10 @@ let eventFinder = (locationObject, response) => {
       const finalEventsArr = eventsArr.map(event => new Event(event));
 
       response.send(finalEventsArr);
+    })
+    .catch(error => {
+      console.error(error);
+      response.status(500).send(errorMessage);
     });
 
   function Event(eventData) {
@@ -152,6 +177,33 @@ let eventFinder = (locationObject, response) => {
     // eslint-disable-next-line camelcase
     this.event_date = eventData.start_time;
     this.summary = eventData.description;
+  }
+};
+
+let movieFinder = (locationObject, response) => {
+  let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${locationObject.search_query}`;
+  superagent.get(url)
+    .then(request => {
+      let movieData = request.body.results;
+      const moviesArr = movieData.map(movie => new Movie(movie));
+      response.send(moviesArr);
+    })
+    .catch(error => {
+      console.error(error);
+      response.status(500).send(errorMessage);
+    });
+  function Movie(movieData) {
+    this.title = movieData.title;
+    this.overview = movieData.overview;
+    // eslint-disable-next-line camelcase
+    this.average_votes = movieData.vote_average;
+    // eslint-disable-next-line camelcase
+    this.total_votes = movieData.vote_count;
+    // eslint-disable-next-line camelcase
+    this.image_url = movieData.poster_path;
+    this.popularity = movieData.popularity;
+    // eslint-disable-next-line camelcase
+    this.released_on = movieData.release_date;
   }
 };
 
