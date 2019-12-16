@@ -1,7 +1,7 @@
 {
-  "name": "301-lab-08-back-end",
-  "version": "1.0.0",
-  "description": "SQL, Postgres additions",
+  "name": "301-lab-09-back-end",
+  "version": "3.0.0",
+  "description": "movies, yelp, refactoring",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svakam/301-lab-08-back-end.git"
+    "url": "git+https://github.com/svakam/301-lab-09-back-end.git"
   },
   "author": "Vik Akam",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/svakam/301-lab-08-back-end/issues"
+    "url": "https://github.com/svakam/301-lab-09-back-end/issues"
   },
-  "homepage": "https://github.com/svakam/301-lab-08-back-end#readme",
+  "homepage": "https://github.com/svakam/301-lab-09-back-end#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
