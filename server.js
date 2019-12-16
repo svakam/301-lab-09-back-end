@@ -28,27 +28,10 @@ app.get('/', (request, response) => {
   response.status(200).send('Proof of life');
 });
 
-// function to check database for location
-let checkDatabaseLocation = city => {
-  let sql = 'SELECT * FROM city_explorer WHERE search_query = $1';
-  const safeValues = [city];
-
-  client.query(sql, safeValues)
-    .then(sqlResults => {
-
-      // if location already exists, send location object from DB in the response to client
-      console.log(sqlResults);
-    })
-    .catch(error => console.error(error));
-  // if not in database, do the searchlatlong function (go to API, send location object in the response to client), and save in database
-};
-
 app.get('/location', (request, response) => {
   try {
     let city = request.query.data;
-
-    checkDatabaseLocation(city);
-    searchLatLong(city, response);
+    checkDatabaseLocation(city, response);
   }
   catch (error) {
     console.error(error);
@@ -78,6 +61,26 @@ app.get('/events', (request, response) => {
   }
 });
 
+// function to check database for location
+let checkDatabaseLocation = (city, response) => {
+  let sql = 'SELECT * FROM city_explorer WHERE search_query = $1';
+  const safeValues = [city];
+
+  client.query(sql, safeValues)
+    .then(sqlResults => {
+
+      // if location already exists, send location object from DB in the response to client
+      if (sqlResults.rows.length) {
+        response.status(200).json(sqlResults.rows[0]);
+      }
+      // if not in database, do the searchlatlong function (go to API, send location object in the response to client), and save in database
+      else {
+        searchLatLong(city, response);
+      }
+    })
+    .catch(error => console.error(error));
+};
+
 // retrieve from APIs
 let searchLatLong = (city, response) => {
   let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${process.env.GEOCODE_API_KEY}`;
@@ -85,6 +88,7 @@ let searchLatLong = (city, response) => {
     .then(request => {
       let locationOb = new Location(city, request.body.results[0]);
       response.send(locationOb);
+      saveToDatabase(locationOb);
     })
     .catch(error => {
       console.error(error);
@@ -100,6 +104,13 @@ let searchLatLong = (city, response) => {
     this.longitude = address.geometry.location.lng;
   }
 };
+
+// save city to database
+let saveToDatabase = (locationOb) => {
+  let sql = 'INSERT INTO city_explorer (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4)';
+  let safeValues = [locationOb.search_query, locationOb.formatted_query, locationOb.latitude, locationOb.longitude];
+  client.query(sql, safeValues);
+}
 
 let dailyWeather = (city, response) => {
   let latitude = city.latitude;
