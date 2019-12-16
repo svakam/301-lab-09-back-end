@@ -7,51 +7,51 @@ SQL, Postgres additions
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
+Use the DBMovies API and Yelp API to, upon entry of a city name from the front end, send the user information on movies set in that city and nearby restaurants. 
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+Import source code from GitHub. Ensure that you have a valid link of the back-end to submit (no trailing backslash). Obtain a GEOCODE API key from Google Maps. Enter desired city name. 
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+Heroku (back-end deployment), Yelp API, DBMovies API, Node.js, Postgres/SQL. 
 
 ## Change Log
-<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
-
-01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource.
+Sunday, 6pm - initialized repo
+Sunday, 8pm - DBMovies now rendering on front-end
+Sunday, 10pm - Yelp now rendering on front-end
+Monday, 12am - modularized code into files
 
 ## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
--->
+Shingo, Laura for URL links to DBMovies and Yelp 
 
 ## Time estimates
 
 Number and name of feature: #1, Movies
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 2 hr
 
-Start time: _____
+Start time: 6pm
 
-Finish time: _____
+Finish time: 8pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 2 hr
 
 Number and name of feature: #2, Yelp
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 2 hr
 
-Start time: _____
+Start time: 8pm
 
-Finish time: _____
+Finish time: 10pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 2 hr
 
 Number and name of feature: #3, Refactoring
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 2 hr
 
-Start time: _____
+Start time: 10pm
 
-Finish time: _____
+Finish time: 12am
 
-Actual time needed to complete: _____
+Actual time needed to complete: 2 hr
